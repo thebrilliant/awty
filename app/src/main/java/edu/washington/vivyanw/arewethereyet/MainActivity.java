@@ -55,13 +55,14 @@ public class MainActivity extends ActionBarActivity {
                         valid = false;
                     } else if (interval < 0) {
                         valid = false;
-                    } /*else if (interval.length() == 1 && interval.contains("0")) {
+                    } else if (phone.length() != 10) {
                         valid = false;
-                    } */else {
+                    } else {
                         valid = true;
                     }
 
                     if (valid) {
+                        phone = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 6) + "-" + phone.substring(6);
                         alarmReceiver = new BroadcastReceiver() {
                             @Override
                             public void onReceive(Context context, Intent intent) {
