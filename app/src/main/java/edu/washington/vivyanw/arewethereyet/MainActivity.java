@@ -50,7 +50,7 @@ public class MainActivity extends ActionBarActivity {
                 if (action.equalsIgnoreCase("start")) {
                     message = msg.getText().toString();
                     phone = num.getText().toString();
-                    interval = timeGap.getInputType();
+                    int interval = Integer.parseInt(timeGap.getText().toString());
                     if (message == null || phone == null || interval == 0) {
                         valid = false;
                     } else if (interval < 0) {
