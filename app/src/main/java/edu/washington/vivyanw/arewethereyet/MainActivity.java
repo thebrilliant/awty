@@ -1,8 +1,6 @@
 package edu.washington.vivyanw.arewethereyet;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
     PendingIntent alarmIntent;
 
     BroadcastReceiver alarmReceiver;
+    SmsManager mngr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,8 @@ public class MainActivity extends ActionBarActivity {
         final EditText num = (EditText) findViewById(R.id.txtPhoneNum);
         final EditText timeGap = (EditText) findViewById(R.id.numInterval);
         startStop = (Button) findViewById(R.id.btnStart);
+
+        mngr = SmsManager.getDefault();
 
         startStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,11 +64,12 @@ public class MainActivity extends ActionBarActivity {
                     }
 
                     if (valid) {
-                        phone = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 6) + "-" + phone.substring(6);
+                        final String formatted = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 6) + "-" + phone.substring(6);
                         alarmReceiver = new BroadcastReceiver() {
                             @Override
                             public void onReceive(Context context, Intent intent) {
-                                Toast.makeText(MainActivity.this, phone + ": " + message, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(MainActivity.this, formatted + ": " + message, Toast.LENGTH_SHORT).show();
+                                mngr.sendTextMessage(phone, null, message, null, null);
                             }
                         };
                         registerReceiver(alarmReceiver, new IntentFilter("edu.washington.vivyanw.alarm"));
